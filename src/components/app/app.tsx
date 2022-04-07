@@ -6,6 +6,7 @@ import styles from './app.module.css';
 
 import LazyLoad from 'react-lazyload';
 import CallsListItem from '../calls-list-item/calls-list-item';
+import Menu from '../menu/menu';
 
 function App() {
   const dispatch = useDispatch();
@@ -15,11 +16,21 @@ function App() {
   }, []);
   return (
     <div className ={styles.wrapper}>
-      {callsList.map((item, index) => {
-        return (
-          <LazyLoad height="100%" offset={200} placeholder={<div style={{height: "100%", width: "100%"}}></div>} key={item.id}><CallsListItem item={item}/></LazyLoad>
-        )
-      })}
+      <Menu />
+      <div className ={styles.mainBlock}>
+        <header>
+          header
+        </header>
+        <div className ={styles.listWrapper}>
+          {callsList.map((item, index) => {
+            return (
+              <LazyLoad height="100%" offset={200} placeholder={<div style={{height: "100%", width: "100%"}}></div>} key={item.id}><CallsListItem item={item}/></LazyLoad>
+            )
+          })}
+        </div>
+        
+      </div>
+      
     </div>
   );
 }
