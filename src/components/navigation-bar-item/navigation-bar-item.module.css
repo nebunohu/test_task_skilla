@@ -1,0 +1,26 @@
+.wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.6);
+  height: 52px;
+  width: 100%;
+  padding-left: 15px; 
+  gap: 15px;
+  box-sizing: border-box;
+}
+
+.wrapper span:hover {
+  cursor: pointer;
+}
+
+.pictureWrapper {
+  margin-top: 5px;
+}
+
+.active {
+  color: rgba(255, 255, 255, 1);
+  background: rgba(216, 228, 251, 0.32);
+  border-left: 3px solid rgba(0, 95, 248, 1);
+}

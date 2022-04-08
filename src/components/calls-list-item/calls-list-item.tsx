@@ -4,27 +4,28 @@ import CallDuration from "../call-duration/call-duration";
 import CallType from "../call-type/call-type";
 
 // Styles
-import styles from './calls-list-item.module.css';
+import componentStyles from './calls-list-item.module.css';
 
 type TCallsListItemProps = {
   item: TListItem;
+  styles?: string;
 }
 
-const CallsListItem: FC<TCallsListItemProps> = ({ item }) => {
+const CallsListItem: FC<TCallsListItemProps> = ({ item, styles }) => {
+  const date = new Date(item.date);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
   return (
-    <div className={`${styles.wrapper}`}>
-      <CallType />
-      <div className={`${styles.date}`}>
-        {item.date}
+    <div className={`${componentStyles.wrapper} ${styles}`}>
+      <CallType type={item.in_out}/>
+      <div className={`${componentStyles.date}`}>
+        {hours}:{minutes > 10 ? minutes : '0' + minutes}
       </div>
-      <div className={`${styles.avatar}`}>
+      <div className={`${componentStyles.avatar}`}>
         <img src={item.person_avatar} alt='' />
       </div>
-      <div className={`${styles.phone}`}>
+      <div className={`${componentStyles.phone}`}>
         {item.to_number}
-      </div>
-      <div className={`${styles.time}`}>
-        {item.time}
       </div>
       <CallDuration value={item.time} />
     </div>

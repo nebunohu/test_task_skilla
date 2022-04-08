@@ -34,4 +34,17 @@ export type TListItem = {
   "person_surname": string;
   "person_avatar": string;
 
-}
+};
+
+export enum NavValues {
+  results = 'Итоги',
+  orders = 'Заказы',
+  messages = 'Сообщения',
+  calls = 'Звонки',
+  counterparties = 'Контрагенты',
+  documents = 'Документы',
+  executors = 'Исполнители',
+  reports = 'Отчеты',
+  knowledgeBase = 'База знаний',
+  settings = 'Настройки'
+};
