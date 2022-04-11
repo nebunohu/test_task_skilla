@@ -21,11 +21,13 @@ header {
 .listWrapper {
   display: flex;
   flex-flow: column nowrap;
-  margin: 61px 120px;
+  margin: 61px 6.25vw;
   padding: 0 40px;
   box-shadow: 0px 4px 5px #E9EDF3;
   border-radius: 8px;
+  box-sizing: border-box;
   background: #FFFFFF;
+  max-width: 1440px;
 }
 
 .listHeader {

@@ -7,12 +7,13 @@ import styles from './app.module.css';
 import LazyLoad from 'react-lazyload';
 import CallsListItem from '../calls-list-item/calls-list-item';
 import Sidebar from '../sidebar/sidebar';
+import Select from '../select/select';
 
 function App() {
   const dispatch = useDispatch();
   const { callsList } = useSelector(store => store.callsListState);
   useEffect(() => {
-    dispatch(getCallsListThunk('2022-03-01', '2022-04-01', ''));
+    dispatch(getCallsListThunk('2022-03-30', '2022-04-01', '0'));
   }, [dispatch]);
   return (
     <div className ={styles.wrapper}>
@@ -23,6 +24,13 @@ function App() {
         </header>
           
         <div className={`${styles.listWrapper}`}>
+          <div className={`${styles.filterWrapper}`}>
+            <div>
+              <input type='text' name='type'></input>
+              <input name='time-period'></input>
+              <Select />
+            </div>
+          </div>
           <div className={`${styles.listHeader} ${styles.grid}`}>
             <div>Тип</div> 
             <div>Время</div> 
