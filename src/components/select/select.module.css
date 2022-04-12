@@ -1,40 +1,49 @@
 .wrapper {
   position: relative;
   user-select: none;
-  width: 100%;
+  width: fit-content;
+  
 }
 .select {
   position: relative;
   display: flex;
   flex-direction: column;
-  border-width: 0 2px 0 2px;
-  border-style: solid;
-  border-color: #394a6d;
 }
 .selectTrigger {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 22px;
-  font-size: 20px;
+  padding: 0 2px;
+  font-size: 14px;
   font-weight: 300;
   color: #3b3b3b;
-  height: 60px;
-  line-height: 60px;
-  background: #ffffff;
+  height: 40px;
+  line-height: 40px;
+  background-color: rgba(0, 0, 0, 0);
   cursor: pointer;
-  border-width: 2px 0 2px 0;
-  border-style: solid;
-  border-color: #394a6d;
+}
+.select input {
+  opacity: 0;
+  height: 0;
+  width: 0;
+}
+.selectTrigger span {
+  background-color: rgba(0, 0, 0, 0);
+  text-align: right;
+  width: 100%;
+  border: none;
+  color: rgba(18, 41, 69, 1);
+  height: 100%;
+  padding: 0 20px;
 }
 .customOptions {
   position: absolute;
   display: block;
   top: 100%;
-  left: 0;
   right: 0;
-  border: 2px solid #394a6d;
+  width: 204px;
+  border: 1px solid #EAF0FA;
   border-top: 0;
   background: #fff;
   transition: all 0.5s;
@@ -42,6 +51,11 @@
   visibility: hidden;
   pointer-events: none;
   z-index: 2;
+  
+  box-sizing: border-box;
+  box-shadow: 0px 0px 26px rgba(233, 237, 243, 0.8);
+  border-radius: 4px;
+  overflow: hidden;
 }
 .select.open .customOptions {
   opacity: 1;
@@ -51,27 +65,29 @@
 .customOption {
   position: relative;
   display: block;
-  padding: 0 22px 0 22px;
-  font-size: 22px;
+  padding: 0 20px 0 20px;
+  font-size: 14px;
   font-weight: 300;
   color: #3b3b3b;
-  line-height: 60px;
+  color: rgba(137, 156, 177, 1);
+  line-height: 40px;
   cursor: pointer;
   transition: all 0.5s;
 }
 .customOption:hover {
   cursor: pointer;
-  background-color: #b2b2b2;
+  background: rgba(0,95,248,0.13);
+  border-radius: 0px;
 }
 .customOption.selected {
-  color: #ffffff;
-  background-color: #305c91;
+  color: rgba(0, 95, 248, 1);
+  border-radius: 0px;
 }
 
 .arrow {
   position: relative;
-  height: 15px;
-  width: 15px;
+  height: 8px;
+  width: 8px;
 }
 .arrow::before, .arrow::after {
   content: "";
@@ -82,20 +98,21 @@
   transition: all 0.5s;
 }
 .arrow::before {
-  left: -5px;
+  left: -2px;
   transform: rotate(45deg);
-  background-color: #394a6d;
+  background: #005FF8;
 }
 .arrow::after {
-  left: 5px;
+  left: 2px;
   transform: rotate(-45deg);
-  background-color: #394a6d;
+  background: #005FF8;
 }
 .open .arrow::before {
-  left: -5px;
+  left: -2px;
   transform: rotate(-45deg);
 }
 .open .arrow::after {
-  left: 5px;
+  left: 2px;
   transform: rotate(45deg);
 }
+

@@ -1,7 +1,13 @@
+@font-face {
+  font-family: "SF Pro Display";
+  src: url('../../fonts/SFProDisplay.ttf') format('ttf');
+}
+
 .wrapper {
   display: flex;
   flex-flow: row nowrap;
   background: #F1F4F9;
+  font-family: "SF Pro Display", sans-serif;
 }
 
 header {
@@ -18,15 +24,29 @@ header {
   flex-basis: 100%;
 }
 
+.contentWrapper {
+  margin: 61px 6.25vw;
+  display: flex;
+  flex-flow: column nowrap;
+  
+}
+
 .listWrapper {
   display: flex;
   flex-flow: column nowrap;
-  margin: 61px 6.25vw;
   padding: 0 40px;
   box-shadow: 0px 4px 5px #E9EDF3;
   border-radius: 8px;
   box-sizing: border-box;
   background: #FFFFFF;
+  
+  max-width: 1440px;
+}
+
+.filtersWrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
   max-width: 1440px;
 }
 
