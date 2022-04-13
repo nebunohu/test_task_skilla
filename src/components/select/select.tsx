@@ -11,11 +11,13 @@ type TSelectProps = {
   value?: string;
   renderValue?: string;
   name?: string;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  id?: string;
+  onChange?: (e: any) => void;
 }
 
-const Select: FC<TSelectProps> = ({ children, defaultValue, name, renderValue, onChange }) => {
+const Select: FC<TSelectProps> = ({ children, defaultValue, name, renderValue, id, onChange }) => {
   const selectorRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const ClickHandler = (event: MouseEvent) => {
@@ -35,16 +37,15 @@ const Select: FC<TSelectProps> = ({ children, defaultValue, name, renderValue, o
       document.removeEventListener('click', ClickHandler);
     }
   }, []);
-  const onSelectClickHandler = (event: React.MouseEvent<HTMLElement>) => {
-    
+  const onSelectClickHandler = () => {
     selectorRef.current?.classList.add(styles.open);
-    const input = selectorRef.current?.querySelector('input');
-    if(input) input.focus();
   }
 
   const onCustomOptionClickHandler = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     const target = event.target as HTMLElement;
+    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")!.set;
+
     if(selectorRef.current) {
       selectorRef.current.querySelector(`.${styles.customOption}.${styles.selected}`)?.classList.remove(styles.selected);
       target.classList.add(styles.selected);
@@ -52,8 +53,9 @@ const Select: FC<TSelectProps> = ({ children, defaultValue, name, renderValue, o
       if( selectorRenderValueContainer )selectorRenderValueContainer.textContent = target.textContent;
       const selectorInput = target.closest(`.${styles.select}`)?.querySelector(`input`);
       if( selectorInput ) {
-        selectorInput.value = target.dataset.value ? target.dataset.value : '';
-        selectorInput.blur();
+        nativeInputValueSetter!.call(selectorInput, target.dataset.value ? target.dataset.value : '');
+        const inputEvent = new Event('input', { bubbles: true});
+        selectorInput.dispatchEvent(inputEvent);
       }
       selectorRef.current.classList.remove(styles.open);
     }
@@ -67,7 +69,7 @@ const Select: FC<TSelectProps> = ({ children, defaultValue, name, renderValue, o
               <span>{renderValue ? renderValue : ''}</span>
               <div className={`${styles.arrow}`}></div>
           </div>
-          <input type='text' value={defaultValue} name={name} onBlur={onChange}/>
+          <input id={id} tabIndex={-1} type='text' value={defaultValue} name={name} onChange={onChange} ref={inputRef}/>
           <div className={`${styles.customOptions}`} onClick={onCustomOptionClickHandler}>
               {children}
           </div>

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactElement } from 'react';
 
 // Styles
 import selectStyles from '../select/select.module.css';
@@ -9,11 +9,13 @@ type TSelectElementProps = {
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   value: string;
   selected?: boolean;
-  children: Element | string;
+  children: Element | string | ReactElement;
 }
 
 const SelectElement: FC<TSelectElementProps> = ({className, onClick, value, selected, children}) => {
   const componentClassName = className + (selected ? ' ' + selectStyles.selected : '');
+  const isReactElement = (x: any): x is ReactElement => children;
+  if(children instanceof ReactElement ) return <div>{children}</div>
   return (
     <span 
       className={componentClassName} 

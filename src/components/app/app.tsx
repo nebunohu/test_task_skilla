@@ -9,6 +9,7 @@ import CallsListItem from '../calls-list-item/calls-list-item';
 import Sidebar from '../sidebar/sidebar';
 import Select from '../select/select';
 import SelectElement from '../select-element/select-element';
+import PeriodInput from '../period-input/period-input';
 
 type TFormState = { 
   type: string;
@@ -28,7 +29,7 @@ function App() {
     const value = e.target.value;
     const name = e.target.name;
 
-    setFormState({...formState, [name]: value});
+    setFormState({...formState, [name]: value === '_' ? '' : value});
   }
   return (
     <div className ={styles.wrapper}>
@@ -43,13 +44,14 @@ function App() {
             
           >
             <Select
+              id='inp1'
               defaultValue=''
               name='type'
               renderValue='Все звонки'
               onChange={onFormChangeHandler}
             >
               <SelectElement 
-                value='' 
+                value='_' 
                 selected
               >
                 Все звонки
@@ -90,7 +92,7 @@ function App() {
               <SelectElement 
                 value='30'
               >
-                Период
+                <PeriodInput />
               </SelectElement>
             </Select>
           </form>
