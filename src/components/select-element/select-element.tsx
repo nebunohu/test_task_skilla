@@ -13,17 +13,19 @@ type TSelectElementProps = {
 }
 
 const SelectElement: FC<TSelectElementProps> = ({className, onClick, value, selected, children}) => {
-  const componentClassName = className + (selected ? ' ' + selectStyles.selected : '');
-  const isReactElement = (x: any): x is ReactElement => children;
-  if(children instanceof ReactElement ) return <div>{children}</div>
+  const componentClassName = className ? className : '' + (selected ? ' ' + selectStyles.selected : '');
+  const isReactElement = (x: typeof children): x is ReactElement => (x as ReactElement).props !== undefined;
+
+  if( isReactElement(children) ) return <div>{children}</div>
+  
   return (
-    <span 
+    <div 
       className={componentClassName} 
       onClick={onClick}
       data-value={value}
     >
       {children}
-    </span>
+    </div>
   );
 };
 

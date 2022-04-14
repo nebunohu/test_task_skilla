@@ -10,6 +10,7 @@ import Sidebar from '../sidebar/sidebar';
 import Select from '../select/select';
 import SelectElement from '../select-element/select-element';
 import PeriodInput from '../period-input/period-input';
+import calculatePeriod from '../../utils/calculate-period';
 
 type TFormState = { 
   type: string;
@@ -21,8 +22,9 @@ function App() {
   const dispatch = useDispatch();
   const { callsList } = useSelector(store => store.callsListState);
   useEffect(() => {
-    dispatch(getCallsListThunk('2022-04-09', '2022-04-12', ''));
-  }, [dispatch]);
+    const period = calculatePeriod(formState.period);
+    dispatch(getCallsListThunk(period.dateStart, period.dateEnd, formState.type));
+  }, [dispatch, formState]);
 
   const onFormChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -31,6 +33,12 @@ function App() {
 
     setFormState({...formState, [name]: value === '_' ? '' : value});
   }
+
+  const onPeriodInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setFormState({...formState, period: e.target.value});
+  }
+
   return (
     <div className ={styles.wrapper}>
       <Sidebar />
@@ -92,7 +100,7 @@ function App() {
               <SelectElement 
                 value='30'
               >
-                <PeriodInput />
+                <PeriodInput onChange={onPeriodInputChange}/>
               </SelectElement>
             </Select>
           </form>
@@ -106,9 +114,11 @@ function App() {
               <div>Звонок</div>
               <div>Длительность</div> 
             </div>
-            {callsList.map((item, index) => {
+            {callsList.map((item) => {
               return (
-                <LazyLoad height="100%" offset={200} placeholder={<div style={{height: "100%", width: "100%"}}></div>} key={item.id}><CallsListItem styles={styles.grid} item={item}/></LazyLoad>
+                //<LazyLoad height="100%" offset={1000} placeholder={<div style={{height: "100%", width: "100%"}} />} key={item.id}>
+                  <CallsListItem styles={styles.grid} item={item} key={item.id}/>
+                //</LazyLoad>
               )
             })}
           </div>

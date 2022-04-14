@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 
 // Components
 
@@ -46,18 +46,22 @@ const Select: FC<TSelectProps> = ({ children, defaultValue, name, renderValue, i
     const target = event.target as HTMLElement;
     const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")!.set;
 
-    if(selectorRef.current) {
+    if ( selectorRef.current ) {
       selectorRef.current.querySelector(`.${styles.customOption}.${styles.selected}`)?.classList.remove(styles.selected);
       target.classList.add(styles.selected);
       const selectorRenderValueContainer = target.closest(`.${styles.select}`)!.querySelector(`[class='${styles.selectTrigger}'] span`);
-      if( selectorRenderValueContainer )selectorRenderValueContainer.textContent = target.textContent;
+
+      if ( selectorRenderValueContainer )selectorRenderValueContainer.textContent = target.textContent;
+
       const selectorInput = target.closest(`.${styles.select}`)?.querySelector(`input`);
-      if( selectorInput ) {
+
+      if ( selectorInput ) {
         nativeInputValueSetter!.call(selectorInput, target.dataset.value ? target.dataset.value : '');
         const inputEvent = new Event('input', { bubbles: true});
         selectorInput.dispatchEvent(inputEvent);
       }
-      selectorRef.current.classList.remove(styles.open);
+
+      if ( !target.querySelector('.period-input') && !target.closest('.period-input') )selectorRef.current.classList.remove(styles.open);
     }
   }
 
@@ -69,7 +73,7 @@ const Select: FC<TSelectProps> = ({ children, defaultValue, name, renderValue, i
               <span>{renderValue ? renderValue : ''}</span>
               <div className={`${styles.arrow}`}></div>
           </div>
-          <input id={id} tabIndex={-1} type='text' value={defaultValue} name={name} onChange={onChange} ref={inputRef}/>
+          <input className={`${styles.selectInput}`} id={id} tabIndex={-1} type='text' value={defaultValue} name={name} onChange={onChange} ref={inputRef}/>
           <div className={`${styles.customOptions}`} onClick={onCustomOptionClickHandler}>
               {children}
           </div>
