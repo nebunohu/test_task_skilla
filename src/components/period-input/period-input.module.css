@@ -1,7 +1,26 @@
+.wrapper {
+  color: rgba(18, 41, 69, 1);
+}
+
 .periodInput {
   border: none;
   outline: none;
   height: 100%;
   width: 100%;
   background: none;
+  color: rgba(173, 191, 223, 1);
+  width: 120px;
+}
+
+.periodInput:focus {
+  color: #000;
+}
+
+
+.periodInputWrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
 }

@@ -11,6 +11,7 @@ import Select from '../select/select';
 import SelectElement from '../select-element/select-element';
 import PeriodInput from '../period-input/period-input';
 import calculatePeriod from '../../utils/calculate-period';
+import Header from '../header/header';
 
 type TFormState = { 
   type: string;
@@ -21,6 +22,7 @@ function App() {
   const [formState, setFormState] = useState<TFormState>({type: '', period: '3'});
   const dispatch = useDispatch();
   const { callsList } = useSelector(store => store.callsListState);
+
   useEffect(() => {
     const period = calculatePeriod(formState.period);
     dispatch(getCallsListThunk(period.dateStart, period.dateEnd, formState.type));
@@ -43,9 +45,7 @@ function App() {
     <div className ={styles.wrapper}>
       <Sidebar />
       <div className ={styles.mainBlock}>
-        <header>
-          header
-        </header>
+        <Header />
         <div className={`${styles.contentWrapper}`}>
           <form 
             className={`${styles.filtersWrapper}`}

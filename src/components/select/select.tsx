@@ -45,18 +45,25 @@ const Select: FC<TSelectProps> = ({ children, defaultValue, name, renderValue, i
     event.stopPropagation();
     const target = event.target as HTMLElement;
     const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")!.set;
+    const periodInput = target.querySelector('input') as HTMLInputElement;
+    const selectorInput = target.closest(`.${styles.select}`)?.querySelector(`input`);
 
     if ( selectorRef.current ) {
       selectorRef.current.querySelector(`.${styles.customOption}.${styles.selected}`)?.classList.remove(styles.selected);
       target.classList.add(styles.selected);
       const selectorRenderValueContainer = target.closest(`.${styles.select}`)!.querySelector(`[class='${styles.selectTrigger}'] span`);
 
-      if ( selectorRenderValueContainer )selectorRenderValueContainer.textContent = target.textContent;
-
-      const selectorInput = target.closest(`.${styles.select}`)?.querySelector(`input`);
+      if ( selectorRenderValueContainer ) {
+        if(target.querySelector('input')) {
+          
+          selectorRenderValueContainer.textContent = periodInput.value;
+        } else {
+          selectorRenderValueContainer.textContent = target.textContent;
+        }
+      }
 
       if ( selectorInput ) {
-        nativeInputValueSetter!.call(selectorInput, target.dataset.value ? target.dataset.value : '');
+        nativeInputValueSetter!.call(selectorInput, target.dataset.value ? target.dataset.value : (periodInput.value ? periodInput.value : ''));
         const inputEvent = new Event('input', { bubbles: true});
         selectorInput.dispatchEvent(inputEvent);
       }

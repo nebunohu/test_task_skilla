@@ -4,14 +4,18 @@ import InputMask from 'react-input-mask';
 // Styles
 import styles from './period-input.module.css';
 
+// Media
+import calendarSrc from '../../images/calendar.svg';
+
 type TPeriodInputProps = { 
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const PeriodInput: FC<TPeriodInputProps> = ({ onChange}) => {
   return (
-    <div className="period-input">
+    <div className={`${styles.wrapper} period-input`}>
       Указать даты
+      <div className={`${styles.periodInputWrapper}`}>
       <InputMask 
         mask='99.99.99-99.99.99'
         maskChar={'_'}
@@ -20,6 +24,8 @@ const PeriodInput: FC<TPeriodInputProps> = ({ onChange}) => {
       >
          {(inputProps: any) => <input className={`${styles.periodInput}`} {...inputProps} type='text' />}
       </InputMask>
+      <img src={calendarSrc} alt='' />
+      </div>
     </div>
     
   );
