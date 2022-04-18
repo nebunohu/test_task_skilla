@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from '../../hooks';
-import { getCallsListThunk } from '../../redux/actions/calls-actions';
+import { clearCallsList, getCallsListThunk } from '../../redux/actions/calls-actions';
 
 import styles from './app.module.css';
 
@@ -25,7 +25,8 @@ function App() {
 
   useEffect(() => {
     const period = calculatePeriod(formState.period);
-    dispatch(getCallsListThunk(period.dateStart, period.dateEnd, formState.type));
+    if ( period.success ) dispatch(getCallsListThunk(period.dateStart, period.dateEnd, formState.type));
+    else dispatch(clearCallsList());
   }, [dispatch, formState]);
 
   const onFormChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -114,13 +115,17 @@ function App() {
               <div>Звонок</div>
               <div>Длительность</div> 
             </div>
-            {callsList.map((item) => {
+            {callsList instanceof Array && callsList.map((item) => {
               return (
                 //<LazyLoad height="100%" offset={1000} placeholder={<div style={{height: "100%", width: "100%"}} />} key={item.id}>
                   <CallsListItem styles={styles.grid} item={item} key={item.id}/>
                 //</LazyLoad>
               )
+              
             })}
+            {callsList instanceof Object &&
+              (<p>{callsList.error_code} {callsList.error_msg}</p>)
+            }
           </div>
         </div>
         

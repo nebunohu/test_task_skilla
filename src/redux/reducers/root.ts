@@ -1,12 +1,13 @@
 import { 
   GET_CALLS_REQUEST, 
   GET_CALLS_REQUEST_SUCCESS, 
-  GET_CALLS_REQUEST_FAILED } from '../actions/calls-actions';
+  GET_CALLS_REQUEST_FAILED,
+  CLEAR_CALLS_LIST } from '../actions/calls-actions';
 import { TCallsActions } from '../actions/calls-actions';
 import { combineReducers } from "redux";
 
 export type TProductsState = {
-  callsList: Array<any>;
+  callsList: Array<any> | any;
   filteredCallsList: Array<any>;
 
   getCallsRequest: boolean;
@@ -49,7 +50,12 @@ export const callsListReducer = (state = callsListInitialState, action: TCallsAc
         getCallsRequestFailed: true,
       }
     }
-    
+    case CLEAR_CALLS_LIST: {
+      return {
+        ...state,
+        callsList: []
+      }
+    }
     
     default: return state;
   }

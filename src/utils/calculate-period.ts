@@ -1,10 +1,11 @@
 type TReturn = {
   dateStart: string; 
-  dateEnd: string
+  dateEnd: string;
+  success: boolean;
 };
 
 const calculatePeriod: any = (filterValue: string) => {
-  const period: TReturn = { dateStart: ' ', dateEnd: ' '};
+  const period: TReturn = { success: true, dateStart: '', dateEnd: ''};
   const today = new Date();
 
   if ( filterValue.length < 3 ) {
@@ -16,6 +17,8 @@ const calculatePeriod: any = (filterValue: string) => {
     const filterValueParts = filterValue.split('-').map(el => el.split('.').reverse().join('-'));
     period.dateStart = filterValueParts[0];
     period.dateEnd = filterValueParts[1];
+  } else {
+    period.success = false;
   }
 
   return period;
