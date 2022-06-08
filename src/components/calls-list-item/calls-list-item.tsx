@@ -20,7 +20,7 @@ const CallsListItem: FC<TCallsListItemProps> = ({ item, className, wrapperRef })
     <div className={`${componentStyles.wrapper} ${className}`} ref={wrapperRef}>
       <CallType type={item.in_out}/>
       <div className={`${componentStyles.date}`}>
-        {hours}:{minutes > 10 ? minutes : '0' + minutes}
+        {hours}:{minutes > 9 ? minutes : '0' + minutes}
       </div>
       <div className={`${componentStyles.avatar}`}>
         <img src={item.person_avatar} alt='' />
