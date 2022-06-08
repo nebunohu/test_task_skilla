@@ -33,7 +33,12 @@ export type TListItem = {
   "person_name": string;
   "person_surname": string;
   "person_avatar": string;
-
+  "partner_data": {
+    "id": string;
+    "name": string;
+    "phone": string;
+  };
+  "source": string;
 };
 
 export enum NavValues {

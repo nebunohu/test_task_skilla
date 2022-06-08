@@ -1,6 +1,6 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from '../../hooks';
-import { clearCallsList, getCallsListThunk } from '../../redux/actions/calls-actions';
+import { clearCallsList, getCallsListThunk, getCallsNexPageThunk } from '../../redux/actions/calls-actions';
 
 import styles from './app.module.css';
 
@@ -12,6 +12,7 @@ import SelectElement from '../select-element/select-element';
 import PeriodInput from '../period-input/period-input';
 import calculatePeriod from '../../utils/calculate-period';
 import Header from '../header/header';
+import { TListItem } from '../../types';
 
 type TFormState = { 
   type: string;
@@ -20,14 +21,45 @@ type TFormState = {
 
 function App() {
   const [formState, setFormState] = useState<TFormState>({type: '', period: '3'});
+  const [page, setPage] = useState(0);
   const dispatch = useDispatch();
-  const { callsList } = useSelector(store => store.callsListState);
+  const {
+    callsList,
+    getNextPageRequest,
+    getCallsRequestFailed,
+    getCallsRequestSuccess,
+    error_msg,
+    pagesCount,
+  } = useSelector(store => store.callsListState);
+
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastEpisodeCardElementRef = useCallback((node: any) => {
+    if (getNextPageRequest || page === pagesCount) return;
+    if (observer.current) {
+      observer.current.disconnect();
+    }
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setPage(page + 1);
+      }
+    });
+    if (node) observer.current.observe(node);
+  }, [getNextPageRequest, page, pagesCount]);
 
   useEffect(() => {
     const period = calculatePeriod(formState.period);
-    if ( period.success ) dispatch(getCallsListThunk(period.dateStart, period.dateEnd, formState.type));
+    if (period.success) {
+      dispatch(getCallsListThunk(period.dateStart, period.dateEnd, formState.type));
+    }
     else dispatch(clearCallsList());
   }, [dispatch, formState]);
+
+  useEffect(() => {
+    const period = calculatePeriod(formState.period);
+    if (period.success && page) {
+      dispatch(getCallsNexPageThunk(period.dateStart, period.dateEnd, formState.type, page));
+    }
+  }, [dispatch, formState, page])
 
   const onFormChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -50,7 +82,6 @@ function App() {
         <div className={`${styles.contentWrapper}`}>
           <form 
             className={`${styles.filtersWrapper}`}
-            
           >
             <Select
               id='inp1'
@@ -113,19 +144,18 @@ function App() {
               <div>Время</div> 
               <div>Сотрудник</div> 
               <div>Звонок</div>
+              <div>Источник</div>
               <div>Длительность</div> 
             </div>
-            {callsList instanceof Array && callsList.map((item) => {
-              return (
-                //<LazyLoad height="100%" offset={1000} placeholder={<div style={{height: "100%", width: "100%"}} />} key={item.id}>
-                  <CallsListItem styles={styles.grid} item={item} key={item.id}/>
-                //</LazyLoad>
-              )
-              
-            })}
-            {callsList instanceof Object &&
-              (<p>{callsList.error_code} {callsList.error_msg}</p>)
-            }
+            {getCallsRequestSuccess && (
+              callsList.map((item, index) => {
+                if (index !== callsList.length - 1) return <CallsListItem className={styles.grid} item={item} key={item.id} />
+                else return <CallsListItem className={styles.grid} item={item} key={item.id} wrapperRef={lastEpisodeCardElementRef} />
+            })
+            )}
+            {getCallsRequestFailed && (
+              <p>{error_msg}</p>
+            )}
           </div>
         </div>
         

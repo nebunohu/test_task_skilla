@@ -10,7 +10,7 @@ import { applyMiddleware, createStore, compose } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { rootReducer } from './redux/reducers/root';
 
-const enhancers = compose(applyMiddleware(thunk));
+const enhancers = composeWithDevTools(applyMiddleware(thunk));
 export const store = createStore(rootReducer, enhancers);
 
 ReactDOM.render(
