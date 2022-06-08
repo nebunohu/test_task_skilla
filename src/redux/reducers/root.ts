@@ -7,6 +7,7 @@ import {
   CLEAR_CALLS_LIST } from '../actions/calls-actions';
 import { TCallsActions } from '../actions/calls-actions';
 import { combineReducers } from "redux";
+import playerReducer from './player';
 
 export type TProductsState = {
   callsList: Array<TListItem>;
@@ -107,5 +108,6 @@ export const callsListReducer = (state = callsListInitialState, action: TCallsAc
 };
 
 export const rootReducer = combineReducers({
-  callsListState: callsListReducer
+  callsListState: callsListReducer,
+  playerState: playerReducer,
 });

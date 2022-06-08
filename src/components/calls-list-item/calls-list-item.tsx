@@ -1,7 +1,8 @@
-import React, { FC, MutableRefObject } from "react";
+import React, { FC, MutableRefObject, useState } from "react";
 import { TListItem } from "../../types";
 import CallDuration from "../call-duration/call-duration";
 import CallType from "../call-type/call-type";
+import Player from "../player/player";
 
 // Styles
 import componentStyles from './calls-list-item.module.css';
@@ -13,9 +14,15 @@ type TCallsListItemProps = {
 };
 
 const CallsListItem: FC<TCallsListItemProps> = ({ item, className, wrapperRef }) => {
+  const [isShowPlayer, setIsShowPlayer] = useState(false);
   const date = new Date(item.date);
   const hours = date.getHours();
   const minutes = date.getMinutes();
+
+  const onCllickHandter = () => {
+    setIsShowPlayer(!isShowPlayer);
+  };
+
   return (
     <div className={`${componentStyles.wrapper} ${className}`} ref={wrapperRef}>
       <CallType type={item.in_out}/>
@@ -33,7 +40,8 @@ const CallsListItem: FC<TCallsListItemProps> = ({ item, className, wrapperRef })
         {item.source}
       </div>
       <div>
-        {!item.record && <CallDuration value={item.time} />}
+        {item.record && !isShowPlayer && <div onClick={onCllickHandter}><CallDuration value={item.time} /></div>}
+        {isShowPlayer && <Player recordId={item.record} partnershipId={item.partnership_id}/>}
       </div>
     </div>
   );
