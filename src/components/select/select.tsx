@@ -41,37 +41,35 @@ const Select: FC<TSelectProps> = ({ children, defaultValue, name, renderValue, i
     selectorRef.current?.classList.add(styles.open);
   }
 
-  const onCustomOptionClickHandler = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
+  const onCustomOptionClickHandler = (event: React.MouseEvent<HTMLDivElement>) => {
+    const currentTarget = event.currentTarget;
     const target = event.target as HTMLElement;
     const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")!.set;
-    const periodInput = target.querySelector('input') as HTMLInputElement;
-    const selectorInput = target.closest(`.${styles.select}`)?.querySelector(`input`);
-    const selectorRenderValueContainer = target.closest(`.${styles.select}`)!.querySelector(`[class='${styles.selectTrigger}'] span`);
+    const periodInput = currentTarget.querySelector('input');
+    const selectorInput = currentTarget.closest(`.${styles.select}`)?.querySelector(`input`);
+    const selectorRenderValueContainer = currentTarget.closest(`.${styles.select}`)!.querySelector(`[class='${styles.selectTrigger}'] span`);
 
     if (periodInput) periodInput.focus();
 
     if ( selectorRef.current ) {
       selectorRef.current.querySelector(`.${styles.customOption}.${styles.selected}`)?.classList.remove(styles.selected);
       target.classList.add(styles.selected);
-      
 
-      if ( selectorRenderValueContainer ) {
-        if(periodInput) {
-          
+      if (selectorRenderValueContainer) {
+        if (periodInput && target.querySelector('input')) {
           selectorRenderValueContainer.textContent = periodInput.value;
         } else {
           selectorRenderValueContainer.textContent = target.textContent;
         }
       }
 
-      if ( selectorInput ) {
+      if (selectorInput && periodInput) {
         nativeInputValueSetter!.call(selectorInput, (target.dataset.hasOwnProperty('value')) ? target.dataset.value : (periodInput.value ? periodInput.value : ''));
         const inputEvent = new Event('input', { bubbles: true});
         selectorInput.dispatchEvent(inputEvent);
       }
 
-      if ( !target.querySelector('.period-input') && !target.closest('.period-input') )selectorRef.current.classList.remove(styles.open);
+      if (target.querySelector('.period-input') && !target.closest('.period-input')) selectorRef.current.classList.remove(styles.open);
     }
   }
 

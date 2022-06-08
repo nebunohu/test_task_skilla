@@ -33,7 +33,7 @@ function App() {
   } = useSelector(store => store.callsListState);
 
   const observer = useRef<IntersectionObserver | null>(null);
-  const lastEpisodeCardElementRef = useCallback((node: any) => {
+  const lastNoteElementRef = useCallback((node: any) => {
     if (getNextPageRequest || page === pagesCount) return;
     if (observer.current) {
       observer.current.disconnect();
@@ -150,7 +150,7 @@ function App() {
             {getCallsRequestSuccess && (
               callsList.map((item, index) => {
                 if (index !== callsList.length - 1) return <CallsListItem className={styles.grid} item={item} key={item.id} />
-                else return <CallsListItem className={styles.grid} item={item} key={item.id} wrapperRef={lastEpisodeCardElementRef} />
+                else return <CallsListItem className={styles.grid} item={item} key={item.id} wrapperRef={lastNoteElementRef} />
             })
             )}
             {getCallsRequestFailed && (
